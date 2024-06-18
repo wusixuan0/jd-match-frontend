@@ -22,7 +22,7 @@ const Form = () => {
         
         let promptText = prompt['prompt'];
         
-        const apiUrl = `${process.env.REACT_APP_API_BASE_URL}`;
+        const apiUrl = process.env.REACT_APP_API_BASE_URL;
         
         if (Object.keys(formData).length === 0) {
         
