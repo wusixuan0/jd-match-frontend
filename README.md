@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+## Streamlined Recruitment Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project aims to streamline the recruitment process by assisting recruiters with AI and enhancing workflow efficiency. Allowing recruiters to focus on client and candidate interactions.
 
-## Available Scripts
+Developed in isolation with Storybook for visual testing, components are thoroughly integrated and tested end-to-end using Jest and Cypress throughout the development cycle.
 
-In the project directory, you can run:
+### Challenges and Solutions
 
-### `npm start`
+The platform features two functionalities that tackles challenges faced in recruiting:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* **Job Description Builder:** Generic job descriptions often fail to attract top talent or accurately reflect the company's needs.
+* **Interview Scheduler:** Traditional Interview scheduling methods involve time-consuming dance between recruiters, interviewers, and candidates, with the candidate's time not always valued.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## User Stories
+Here's a breakdown of user roles and their goals within the platform:
 
-### `npm test`
+* **Recruiters:**
+    * Create clear and compelling job descriptions (**Job Description Builder**)
+    * Easily see when interviewers are available and offer those times to candidates, so that I can schedule interviews quickly and efficiently. (Interview Scheduler)
+* **Interviewers:**
+    * Set availability for interviews (**Interview Scheduler**)
+* **Candidates:**
+    * Find available interview slots (**Interview Scheduler**)
+    * Receive interview reminders (**Interview Scheduler**)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**More On Job Description Builder:**
 
-### `npm run build`
+This tool streamlines job description creation by guiding recruiters through a structured discussion with client companies.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[chatgpt-prompts-for-job-descriptions](https://www.bizway.io/blog/chatgpt-prompts-for-job-descriptions)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
