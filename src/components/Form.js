@@ -4,6 +4,10 @@ import inputFields from '../utils/job_description_questions.json';
 import prompt from '../utils/prompt.json';
 import Markdown from 'react-markdown'
 
+if (process.env.REACT_APP_API_BASE_URL) {
+    axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+}
+
 const Form = () => {
     const [formData, setFormData] = useState({});
     const [responseText, setResponseText] = useState('');
@@ -21,8 +25,8 @@ const Form = () => {
         e.preventDefault();
         
         let promptText = prompt['prompt'];
-        const apiUrl = 'http://localhost:3001/api/';
-        
+        const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/api`;
+
         if (Object.keys(formData).length == 0) {
         
             inputFields.forEach((question) => {

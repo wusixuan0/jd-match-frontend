@@ -49,3 +49,8 @@ button {
     margin-top: 10px;
     font-size: 20px;
 }
+ul {
+    line-height: 150%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
