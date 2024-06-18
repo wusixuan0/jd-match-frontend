@@ -2,12 +2,21 @@ textarea {
     height: 200px;
     width: 95%;
     line-height:150%;
-    font-size: 15px;
+    font-size: 16px;
 }
 form {
     padding: 50px;
 }
-
+input {
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    border-radius: 3px;
+    outline: none;
+    border: 1px solid #ddd;
+}
+h3 {
+    margin: 15px 0;
+}
 button {
     margin-top: 15px;
     padding: 15px;
@@ -28,3 +37,10 @@ button {
     justify-content: center;
     padding: 30px;
 }
+.jd {
+    line-height: 150%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+

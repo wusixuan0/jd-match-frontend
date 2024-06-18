@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import axios from "axios";
 import inputFields from '../utils/job_description_questions.json';
 import prompt from '../utils/prompt.json';
+import Markdown from 'react-markdown'
 
 const Form = () => {
     const [formData, setFormData] = useState({});
-    
+    const [responseText, setResponseText] = useState('');
     const handleInputChange = (e) => {
         setFormData({
             ...formData,
@@ -13,6 +14,7 @@ const Form = () => {
         });
     };
     const handleSubmit = async (e) => {
+        e.preventDefault();
         let promptText = prompt['prompt'];
 
         if (Object.keys(formData).length === 0) {
@@ -20,8 +22,18 @@ const Form = () => {
                 promptText += `\n${question['title']}: ${question['sample_response']}`;
             });
         }
+        promptText += prompt['add_prompt']
+        const apiUrl = 'http://localhost:3001/api/';
+        const testDisplayUrl = 'http://localhost:3001/api/';
 
-        e.preventDefault();
+        try {
+            // const response = await axios.post(apiUrl, { prompt: promptText});
+            const response = await axios.get(testDisplayUrl);
+            setResponseText(response.data.responseText);
+        } catch (error) {
+            console.error(error);
+        }
+        
     }        
     return (
         <div className="app">
@@ -49,26 +61,8 @@ const Form = () => {
             ))}
             <button type="submit">Create Job Description</button>
             </form>
+            <Markdown className="jd">{responseText}</Markdown>
         </div>
-        // <div className='app'>
-            
-        //     <form onSubmit={handleSubmit}>
-        //         <label htmlFor='title'>Enter your full name</label>
-        //         <input
-        //             type='text'
-        //             // required
-        //             name='title'
-        //             // id='fullName'
-        //             value={formData.title}
-        //             onChange={handleInputChange}
-        //             placeholder="Enter your name"
-        //         />
-                
-
-
-        //         <button>Create Job Description</button>
-        //     </form>
-        // </div>
     );
 };
 
