@@ -3,4 +3,4 @@
   command = "npm run build"
   publish = "build/"
 [build.environment]
-  REACT_APP_API_BASE_URL = "http://recruitexpressserver-production-a7a5.up.railway.app"
+  REACT_APP_API_BASE_URL = "https://recruitexpressserver-production-a7a5.up.railway.app"
