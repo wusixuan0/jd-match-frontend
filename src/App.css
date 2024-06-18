@@ -43,4 +43,9 @@ button {
     padding-right: 10%;
 }
 
-
+.warning {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 20px;
+}
