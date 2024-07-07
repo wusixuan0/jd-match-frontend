@@ -1,4 +1,6 @@
 ## Streamlined Recruitment Platform
+https://jd-builder.netlify.app
+
 
 This project aims to streamline the recruitment process by assisting recruiters with AI and enhancing workflow efficiency. Allowing recruiters to focus on client and candidate interactions.
 
