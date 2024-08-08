@@ -6,6 +6,7 @@ import { createClient } from '@supabase/supabase-js'
 const PDFUploadForm = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [responseList, setResponseList] = useState('');
+  const [error, setError] = useState('');
 
   const handleFileChange = (event) => {
     setPdfFile(event.target.files[0]);
@@ -35,11 +36,12 @@ const PDFUploadForm = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+      
       const ranked_jds=response?.data?.ranked_jds
       setResponseList(ranked_jds);
+
     } catch (error) {
-      console.error(error);
+      setError(error?.response?.data?.error);
     }
   };
 
@@ -65,7 +67,7 @@ const PDFUploadForm = () => {
         />
         <button type="submit">Upload</button>
       </div>
-
+      {error}
       <ul>
       {Object.values(responseList).map((jd) => (
         
