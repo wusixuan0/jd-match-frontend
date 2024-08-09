@@ -89,10 +89,23 @@ const PDFUploadForm = () => {
                 </button>
             </form>
             {error}
+            {responseList && <h3> Your Top 5 Job Recommendations </h3>}
             <ul>
-                { Object.values(responseList).map((jd) => (
+                { Object.values(responseList).map((jd, index) => (
                     <div key={jd?._id}>
+                        <h2>
+                            {index === 0 ? '🥇 Number 1 Match:' : 
+                            index === 1 ? '🥈 Number 2 Match:' : 
+                            index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}
+                        </h2>
+                        <div>{jd?._source?.title}</div>
+                        <div>{jd?._source?.companyName}</div>
+                        <div>{jd?._source?.location}</div>
                         <Markdown>{jd?._source?.description}</Markdown>
+                        <h2>Application Links And More Info for                            
+                            {index === 0 ? '🥇 Number 1 Match:' : 
+                            index === 1 ? '🥈 Number 2 Match:' : 
+                            index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}</h2> 
                         <NestedJSON data={jd?._source} />
                     </div>
                 )) }

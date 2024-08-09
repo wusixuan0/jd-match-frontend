@@ -60,19 +60,19 @@ input {
 h3 {
     margin: 15px 0;
 }
-.app {
+/* .app {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 30px;
-}
-.jd {
+} */
+/* .jd {
     line-height: 150%;
     padding-left: 10%;
     padding-right: 10%;
-}
+} */
 
 .warning {
     color: red;
@@ -82,6 +82,6 @@ h3 {
 }
 ul {
     line-height: 150%;
-    padding-left: 10%;
-    padding-right: 10%;
+    padding-left: 5%;
+    padding-right: 5%;
 }
