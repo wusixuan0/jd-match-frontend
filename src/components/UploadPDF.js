@@ -59,13 +59,17 @@ const PDFUploadForm = () => {
         <h2>Resume Match</h2>
         <b>Project Overview: </b>
         <p>A end-to-end LLM solution for job match that takes a user's resume PDF as input and returns the top 5 best-matching job descriptions from a dataset of 51,863 job listings stored in OpenSearch, scraped from Google Jobs.</p>
+        <div> 
+          <a href="https://github.com/wusixuan0/jd-match-api">back end</a> <a href="https://github.com/wusixuan0/jd-match-frontend">front end</a> <a href="https://carbonated-waxflower-92e.notion.site/bf05026ee8264c0bb20395f4ccd3cd6e?pvs=4">notion</a> 
+          
+        </div>
         <p>Instruction: Upload resume PDF to get top 5 job posts</p>
         <input
           type="file"
           accept="application/pdf"
           onChange={handleFileChange}
         />
-        <button type="submit">Upload</button>
+        <button type="submit" class="upload-button">Upload</button>
       </div>
       {error}
       <ul>
