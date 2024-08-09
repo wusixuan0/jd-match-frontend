@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Markdown from 'react-markdown'
-import { createClient } from '@supabase/supabase-js'
 
 const PDFUploadForm = () => {
   const [pdfFile, setPdfFile] = useState(null);

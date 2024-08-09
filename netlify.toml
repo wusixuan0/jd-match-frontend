@@ -1,6 +1,6 @@
 [build]
   base = "/"
-  command = "npm run build"
-  publish = "build/"
+  command = "CI=false npm run build"
+  publish = "build"
 [build.environment]
-  REACT_APP_API_BASE_URL = "https://recruitexpressserver-production-a7a5.up.railway.app"
+  REACT_APP_API_BASE_URL = "https://match-django-api-98fq.onrender.com/api/match/"
