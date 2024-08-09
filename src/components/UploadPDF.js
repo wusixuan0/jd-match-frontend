@@ -6,6 +6,7 @@ const PDFUploadForm = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [responseList, setResponseList] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFileChange = (event) => {
     setPdfFile(event.target.files[0]);
@@ -14,11 +15,12 @@ const PDFUploadForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!pdfFile) {
-      return;
-    }
+    if (!pdfFile) return;
 
-    // add REACT_APP_API_URL= to .env
+    setIsLoading(true);
+    setResponseList('');
+    setError('');
+
     const API_BASE_URL = process.env.REACT_APP_API_URL;
 
     if (API_BASE_URL) {
@@ -38,7 +40,7 @@ const PDFUploadForm = () => {
       
       const ranked_jds=response?.data?.ranked_jds
       setResponseList(ranked_jds);
-
+      setIsLoading(false);
     } catch (error) {
       setError(error?.response?.data?.error);
     }
@@ -68,7 +70,12 @@ const PDFUploadForm = () => {
           accept="application/pdf"
           onChange={handleFileChange}
         />
-        <button type="submit" class="upload-button">Upload</button>
+        <button type="submit"
+         className="upload-button"
+         disabled={isLoading || !pdfFile}
+        >
+          {isLoading ? 'Uploading...' : 'Upload'}
+        </button>
       </div>
       {error}
       <ul>
