@@ -4,48 +4,73 @@ import Markdown from 'react-markdown'
 
 const PDFUploadForm = () => {
     const [pdfFile, setPdfFile] = useState(null);
-    const [version, setVersion] = useState('version1');
+    const [version, setVersion] = useState('version2');
     const [responseList, setResponseList] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [logs, setLogs] = useState([]);
 
     const handleFileChange = (event) => {
         setPdfFile(event.target.files[0]);
     };
 
     const handleSubmit = async (event) => {
-    event.preventDefault();
+        event.preventDefault();
 
-    if (!pdfFile) return;
+        if (!pdfFile) return;
+        
+        const WS_URL = process.env.REACT_APP_WS_URL || 'ws://localhost:8000/ws/logs/';
 
-    setIsLoading(true);
-    setResponseList('');
-    setError('');
+        if (WS_URL) {
+            console.log("socket URL ", WS_URL)
+        } else {
+            console.log("socket URL not found")
+        }
 
-    const API_BASE_URL = process.env.REACT_APP_API_URL;
+        let socket = new WebSocket(WS_URL);
+        socket.onopen = () => {
+            console.log('WebSocket is connected.');
+        };
 
-    if (API_BASE_URL) {
-        console.log("API URL found", API_BASE_URL)
-    } else {
-        console.log("API URL not found")
-    }
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('Received log:', data.log);
+            setLogs(prevLogs => [...prevLogs, data.log]);
+        };
 
-    try {
-        const formData = new FormData();
-        formData.append('file', pdfFile);
-        formData.append('version', version);
-        const response = await axios.post(API_BASE_URL, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+        socket.onclose = () => {
+            console.log('WebSocket is closed.');
+        };
 
-        const ranked_jds=response?.data?.ranked_jds
-        setResponseList(ranked_jds);
-        setIsLoading(false);
-    } catch (error) {
-        setError(error?.response?.data?.error);
-    }
+        setIsLoading(true);
+        setResponseList('');
+        setError('');
+        setLogs([]);
+
+        const API_BASE_URL = process.env.REACT_APP_API_URL  || 'http://127.0.0.1:8000/api/match/';
+
+        if (API_BASE_URL) {
+            console.log("API URL found", API_BASE_URL)
+        } else {
+            console.log("API URL not found")
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('file', pdfFile);
+            formData.append('version', version);
+            const response = await axios.post(API_BASE_URL, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+            const ranked_jds=response?.data?.ranked_jds
+            setResponseList(ranked_jds);
+            setIsLoading(false);
+        } catch (error) {
+            setError(error?.response?.data?.error);
+        }
     };
 
     const NestedJSON = ({ data }) => {
@@ -88,6 +113,10 @@ const PDFUploadForm = () => {
                     {isLoading ? 'Uploading...' : 'Upload'}
                 </button>
             </form>
+            {logs.length > 0 && <h3>Server Logs</h3>}
+                {logs.map((log, index) => (
+                    <div className='logs' key={index}>{log}</div>
+                ))}
             {error}
             {responseList && <h3> Your Top 5 Job Recommendations </h3>}
             <ul>
