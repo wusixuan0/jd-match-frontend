@@ -4,7 +4,7 @@ import Markdown from 'react-markdown'
 
 const PDFUploadForm = () => {
     const [pdfFile, setPdfFile] = useState(null);
-    const [version, setVersion] = useState('version1');
+    const [version, setVersion] = useState('version2');
     const [responseList, setResponseList] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -78,21 +78,31 @@ const PDFUploadForm = () => {
         delete filteredData?.description;
         return (<pre>{JSON.stringify(data, null, 2)}</pre>);
     };
+    const processLog = (log) => {
+        if (log.startsWith('>>>')) {
+          return <h3>{log.slice(3)}</h3>;
+        }
+        if (log.startsWith('<<<')) {
+          return <h3>{log.slice(3)}<hr class="dashed"></hr></h3>;
+          
+        }
+        return <div>{log}</div>;
+      };
 
     return (
         <div className="upload-page">
             
             <h2>AI-Powered Job Match Solution</h2>
             <b>Project Overview: </b>
-            <p>This solution leverages Large Language Models (LLMs) to streamline the job search process. It takes a user's resume in PDF format as input and analyzes it to extract key skills, experiences, and career goals. The extracted information is then compared against a vast dataset of 51,863 job listings stored in OpenSearch, which have been collected from Google Jobs.  The system then identifies and returns the top 5 job descriptions that are the best match for the user's profile.</p>
+            <p>This solution leverages Large Language Models and Semantic Search to streamline the job search process. It takes a user's resume in PDF format as input and extract skills, experiences, qualifications, career goals and preferences. The extracted data is then compared against a vast dataset of 51,863 job listings stored in OpenSearch, which have been collected from Google Jobs.  The system then identifies and returns the top 5 job descriptions that are the best match for the user's profile.</p>
             <p>Available job titles in this tool are: Data Engineer, Data Scientist, Paid Media, Machine Learning Engineer, Data Analyst, Software Engineer, Paid Search, Business Intelligence Analyst, and Paid Social.</p>
-            <p>Available locations are: Toronto, Vancouver, Montreal, Calgary</p>
+            <p>Available locations are: Toronto, Vancouver, Montreal, Calgary.</p>
             
             <p><a href="https://carbonated-waxflower-92e.notion.site/b978cea7fa9a4f2ab72558e9ff101ddf?pvs=4">Demo, Detailed Explanation, and Future Release</a></p>
             <div> 
                 View My Code: <a href="https://github.com/wusixuan0/jd-match-api">Backend</a> <a href="https://github.com/wusixuan0/jd-match-frontend">Frontend</a>  
             </div>
-            <p>Instruction: Upload resume PDF to get top 5 job posts.</p>
+            <p>Instruction: Upload resume PDF to get top 5 job posts, with option to select version.</p>
             <div>Version 1 directly leverages Google Gemini to assess, match, and rank job descriptions.</div>
             <p>Version 2 combines semantic search with embeddings and Gemini. More versions to come. See link for future release. </p>
             <form onSubmit={handleSubmit}>
@@ -118,7 +128,9 @@ const PDFUploadForm = () => {
             </form>
             {logs.length > 0 && <h3>Server Logs</h3>}
                 {logs.map((log, index) => (
-                    <div className='logs' key={index}>{log}</div>
+                    <div className='logs' key={index}>
+                        {processLog(log)}
+                    </div>
                 ))}
             {error}
             {responseList && <h3> Your Top 5 Job Recommendations </h3>}
