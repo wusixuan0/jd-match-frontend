@@ -10,6 +10,7 @@ const PDFUploadForm = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [logs, setLogs] = useState([]);
+    const [activeTab, setActiveTab] = useState('logs');
 
     const handleFileChange = (event) => {
         setPdfFile(event.target.files[0]);
@@ -80,15 +81,40 @@ const PDFUploadForm = () => {
         delete filteredData?.description;
         return (<pre>{JSON.stringify(data, null, 2)}</pre>);
     };
+
     const processLog = (log) => {
         if (log.startsWith('>>>')) {
           return <h3>{log.slice(3)}</h3>;
         } else if (log.startsWith('<<<')) {
-          return <h3>{log.slice(3)}<hr class="dashed"></hr></h3>;
+          return <h3>{log.slice(3)}<hr className="dashed"></hr></h3>;
         } else {
           return <div>{log}</div>;
         }
       };
+
+    const tabStyle = {
+        display: 'flex',
+        borderBottom: '1px solid #ccc',
+        marginBottom: '20px',
+        overflowX: 'auto',
+    };
+
+    const tabButtonStyle = (isActive) => ({
+        padding: '10px 20px',
+        border: 'none',
+        background: isActive ? '#f0f0f0' : 'transparent',
+        cursor: 'pointer',
+        borderBottom: isActive ? '2px solid #007bff' : 'none',
+        whiteSpace: 'nowrap',
+    });
+
+    const contentStyle = {
+        padding: '20px',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '0 0 5px 5px',
+    };
+
+    const jobPosts = Object.values(responseList);
 
     return (
         <div className="upload-page">
@@ -134,34 +160,101 @@ const PDFUploadForm = () => {
                     {isLoading ? 'Uploading...' : 'Upload'}
                 </button>
             </form>
-            {logs.length > 0 && <h3>Server Logs</h3>}
-                {logs.map((log, index) => (
-                    <div className='logs' key={index}>
-                        {processLog(log)}
-                    </div>
-                ))}
-            {error}
-            {responseList && <h3> Your Top 5 Job Recommendations </h3>}
-            <ul>
-                { Object.values(responseList).map((jd, index) => (
-                    <div key={jd?._id}>
-                        <h2>
-                            {index === 0 ? '🥇 Number 1 Match:' : 
-                            index === 1 ? '🥈 Number 2 Match:' : 
-                            index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}
-                        </h2>
-                        <div>{jd?._source?.title}</div>
-                        <div>{jd?._source?.companyName}</div>
-                        <div>{jd?._source?.location}</div>
-                        <Markdown>{jd?._source?.description}</Markdown>
-                        <h2>Application Links And More Info for                            
-                            {index === 0 ? '🥇 Number 1 Match:' : 
-                            index === 1 ? '🥈 Number 2 Match:' : 
-                            index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}</h2> 
-                        <NestedJSON data={jd?._source} />
-                    </div>
-                )) }
-            </ul>
+
+
+
+
+
+
+
+
+
+
+
+            <div>
+                <div style={tabStyle}>
+                    <button 
+                    style={tabButtonStyle(activeTab === 'logs')}
+                    onClick={() => setActiveTab('logs')}
+                    >
+                    Server Logs
+                    </button>
+                    {jobPosts.map((job, index) => (
+                        <button
+                            key={job?._id}
+                            style={tabButtonStyle(activeTab === index)}
+                            onClick={() => setActiveTab(index)}
+                        >
+                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'} Job {index + 1}
+                    </button>
+                    ))}
+                </div>
+
+                <div style={contentStyle}>
+                    {activeTab === 'logs' && (
+                    <>
+                        {logs.length > 0 && <h3>Server Logs</h3>}
+                        {logs.map((log, index) => (
+                        <div className='logs' key={index}>
+                            {processLog(log)}
+                        </div>
+                        ))}
+                        {error}
+                    </>
+                    )}
+
+                    { jobPosts.map((jd, index) => (
+                        activeTab === index && (
+                            <div key={jd?._id}>
+                            <h2>
+                                {index === 0 ? '🥇 Number 1 Match:' :
+                                index === 1 ? '🥈 Number 2 Match:' :
+                                index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}
+                            </h2>
+                            <div><strong>{jd?._source?.title}</strong></div>
+                            <div>{jd?._source?.companyName}</div>
+                            <div>{jd?._source?.location}</div>
+                            <Markdown>{jd?._source?.description}</Markdown>
+                            <h3>Application Links And More Info</h3>
+                            <NestedJSON data={jd?._source} />
+                            </div>
+                        )
+                        ))
+                    }
+
+                    {activeTab === 'jobs' && (
+                    <>
+                        {responseList && <h3>Your Top 5 Job Recommendations</h3>}
+                        <ul style={{ listStyle: 'none', padding: 0 }}>
+                        {Object.values(responseList).map((jd, index) => (
+                            <li key={jd?._id} style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '20px' }}>
+                            <h2>
+                                {index === 0 ? '🥇 Number 1 Match:' :
+                                index === 1 ? '🥈 Number 2 Match:' :
+                                index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}
+                            </h2>
+                            <div><strong>{jd?._source?.title}</strong></div>
+                            <div>{jd?._source?.companyName}</div>
+                            <div>{jd?._source?.location}</div>
+                            <Markdown>{jd?._source?.description}</Markdown>
+                            <h3>Application Links And More Info</h3>
+                            <NestedJSON data={jd?._source} />
+                            </li>
+                        ))}
+                        </ul>
+                    </>
+                    )}
+
+
+
+                </div>
+            </div>
+
+
+
+
+
+
         </div>
     );
 };
