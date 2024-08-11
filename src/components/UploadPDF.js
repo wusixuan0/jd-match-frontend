@@ -5,6 +5,7 @@ import Markdown from 'react-markdown'
 const PDFUploadForm = () => {
     const [pdfFile, setPdfFile] = useState(null);
     const [version, setVersion] = useState('version2');
+    const [modelName, setModelName] = useState('gemini-1.5-flash');
     const [responseList, setResponseList] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -59,6 +60,7 @@ const PDFUploadForm = () => {
             const formData = new FormData();
             formData.append('file', pdfFile);
             formData.append('version', version);
+            formData.append('model_name', modelName);
             const response = await axios.post(API_BASE_URL, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -105,13 +107,19 @@ const PDFUploadForm = () => {
             <div>Version 1 directly leverages Google Gemini to assess, match, and rank job descriptions.</div>
             <p>Version 2 combines semantic search with embeddings and Gemini. More versions to come. See link for future release. </p>
             <form onSubmit={handleSubmit}>
-
                 <select value={version} 
                     onChange={(e) => setVersion(e.target.value)}
                     className="version-select"
                 >
                     <option value="version1">Version 1</option>
                     <option value="version2">Version 2</option>
+                </select>
+                <select value={modelName} 
+                    onChange={(e) => setModelName(e.target.value)}
+                    className="version-select"
+                >
+                    <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                    <option value="gemini-1.5-pro">gemini-1.5-pro (rate limit 2 RPM)</option>
                 </select>
                 <input
                     type="file"
