@@ -162,6 +162,7 @@ const PDFUploadForm = () => {
                 </button>
             </form>
 
+            {(logs.length > 0 || jobPosts.length > 0) && 
             <div>
                 <div style={tabStyle}>
                     <button 
@@ -213,7 +214,7 @@ const PDFUploadForm = () => {
                     ))}
 
                 </div>
-            </div>
+            </div>}
 
 
 
