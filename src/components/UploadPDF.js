@@ -118,9 +118,9 @@ const PDFUploadForm = () => {
                     onChange={(e) => setModelName(e.target.value)}
                     className="version-select"
                 >
-                    <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-                    <option value="gemini-1.5-pro">gemini-1.5-pro (rate limit 2 RPM)</option>
-                    <option value="gemini-1.5-pro-exp-0801">gemini-1.5-pro-exp-0801 (new experimental model, rate limit unknown)</option>
+                    <option value="gemini-1.5-flash">gemini-1.5-flash (recommend)</option>
+                    <option value="gemini-1.5-pro">gemini-1.5-pro (my API key usage is limited)</option>
+                    <option value="gemini-1.5-pro-exp-0801">gemini-1.5-pro-exp-0801</option>
                 </select>
                 <input
                     type="file"
