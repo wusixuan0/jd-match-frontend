@@ -112,6 +112,7 @@ const PDFUploadForm = () => {
         padding: '20px',
         backgroundColor: '#f9f9f9',
         borderRadius: '0 0 5px 5px',
+        lineHeight : '1.5'
     };
 
     const jobPosts = Object.values(responseList);
@@ -161,16 +162,6 @@ const PDFUploadForm = () => {
                 </button>
             </form>
 
-
-
-
-
-
-
-
-
-
-
             <div>
                 <div style={tabStyle}>
                     <button 
@@ -219,33 +210,7 @@ const PDFUploadForm = () => {
                             <NestedJSON data={jd?._source} />
                             </div>
                         )
-                        ))
-                    }
-
-                    {activeTab === 'jobs' && (
-                    <>
-                        {responseList && <h3>Your Top 5 Job Recommendations</h3>}
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                        {Object.values(responseList).map((jd, index) => (
-                            <li key={jd?._id} style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '20px' }}>
-                            <h2>
-                                {index === 0 ? '🥇 Number 1 Match:' :
-                                index === 1 ? '🥈 Number 2 Match:' :
-                                index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}
-                            </h2>
-                            <div><strong>{jd?._source?.title}</strong></div>
-                            <div>{jd?._source?.companyName}</div>
-                            <div>{jd?._source?.location}</div>
-                            <Markdown>{jd?._source?.description}</Markdown>
-                            <h3>Application Links And More Info</h3>
-                            <NestedJSON data={jd?._source} />
-                            </li>
-                        ))}
-                        </ul>
-                    </>
-                    )}
-
-
+                    ))}
 
                 </div>
             </div>
