@@ -81,12 +81,11 @@ const PDFUploadForm = () => {
     const processLog = (log) => {
         if (log.startsWith('>>>')) {
           return <h3>{log.slice(3)}</h3>;
-        }
-        if (log.startsWith('<<<')) {
+        } else if (log.startsWith('<<<')) {
           return <h3>{log.slice(3)}<hr class="dashed"></hr></h3>;
-          
+        } else {
+          return <div>{log}</div>;
         }
-        return <div>{log}</div>;
       };
 
     return (
