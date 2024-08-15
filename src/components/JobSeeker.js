@@ -1,7 +1,21 @@
 import React, { useState } from 'react';
-import UploadPDF from './UploadPDF.js'
+import UploadPDF from './UploadPDF.js';
+import Results from './Results.js';
 
 const JobSeeker = () => {
+    const [responseList, setResponseList] = useState([]);
+    const [logs, setLogs] = useState([]);
+    const [transactionId, setTransactionId] = useState(null);
+
+    const handleUploadSuccess = (data) => {
+        setResponseList(data.ranked_jds);
+        setTransactionId(data.transaction_id);
+    };
+
+    const handleLogUpdate = (newLog) => {
+        setLogs(prevLogs => [...prevLogs, newLog]);
+    };
+
     return (
         <div className="upload-page">
             <h2>AI-Powered Job Match</h2>
@@ -11,10 +25,19 @@ const JobSeeker = () => {
             <p>Available locations are: Toronto, Vancouver, Montreal, Calgary.</p>
             <p>Version 1 directly leverages Gemini API by Google to assess, match, and rank job descriptions. Version 2 combines similarity search (using Faiss by Facebook AI) with embeddings and Gemini API.</p>
 
-            <UploadPDF />
+            <UploadPDF 
+                onUploadSuccess={handleUploadSuccess}
+                onLogUpdate={handleLogUpdate}
+            />
+            {(logs.length > 0 || responseList.length > 0) && (
+                <Results 
+                    responseList={responseList}
+                    logs={logs}
+                    transactionId={transactionId}
+                />
+            )}
         </div>    
-    
-
     );
 };
+
 export default JobSeeker;

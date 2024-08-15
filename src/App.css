@@ -1,3 +1,15 @@
+.feedback {
+  width: 80px;
+  height: 35px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #d5d5d5;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  margin: 0.65rem;
+}
+
 .frequency-options label {
   margin-right: 15px;
 }
@@ -14,9 +26,6 @@
 }
 .upload-container {
   display: flex;
-}
-.subcribe {
-  height: 37px;
 }
 .pdf-input {
   height: 43px;
@@ -40,7 +49,7 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-form {
+.email-form, .pdf-form {
   display: flex;
   gap: 10px;
 }
