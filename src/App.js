@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
-import UploadPDF from './components/UploadPDF.js';
+import JobSeeker from './components/JobSeeker.js';
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-        <Route index element={<UploadPDF />} />
+          <Route path="/" element={<JobSeeker />} />
         </Routes>
       </BrowserRouter>
     </div>

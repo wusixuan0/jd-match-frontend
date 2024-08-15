@@ -11,7 +11,45 @@ const PDFUploadForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [logs, setLogs] = useState([]);
     const [activeTab, setActiveTab] = useState('logs');
-
+    const [transactionId, setTransactionId] = useState(null);
+    const [frequency, setFrequency] = useState('Daily');
+    const [email, setEmail] = useState('');
+    const [isSubscribing, setIsSubscribing] = useState(false);
+    const [isSendingFeedback, setIsSendingFeedback] = useState(false);
+    const handleFrequencyChange = (event) => {
+        setFrequency(event.target.value);
+    };
+  
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+    };
+    const handleFeedbackSubmit = async (event) => {
+    };
+    const handleEmailSubmit = async (event) => {
+        event.preventDefault();
+        setIsSubscribing(true);
+        const EMAIL_SUBSCRIBE_URL = process.env.REACT_APP_EMAIL_SUBSCRIBE_URL  || 'http://127.0.0.1:8000/api/subscribe/';
+        if (EMAIL_SUBSCRIBE_URL) {
+            console.log("Email Subscribe URL ", EMAIL_SUBSCRIBE_URL)
+        } else {
+            console.log("Email Subscribe URL not found")
+        }
+        try {
+            const formData = new FormData();
+            formData.append('transaction_id', transactionId);
+            formData.append('email', email);
+            formData.append('frequency', frequency);
+            const response = await axios.post(EMAIL_SUBSCRIBE_URL, formData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            setIsSubscribing(false);
+        } catch (error) {
+            setError(error?.response?.data?.error);
+        }
+    };
+    
     const handleFileChange = (event) => {
         setPdfFile(event.target.files[0]);
     };
@@ -63,13 +101,15 @@ const PDFUploadForm = () => {
             formData.append('version', version);
             formData.append('model_name', modelName);
             const response = await axios.post(API_BASE_URL, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
 
-            const ranked_jds=response?.data?.ranked_jds
+            const ranked_jds=response?.data?.ranked_jds;
+            const transaction_id=response?.data?.transaction_id;
             setResponseList(ranked_jds);
+            setTransactionId(transaction_id);
             setIsLoading(false);
         } catch (error) {
             setError(error?.response?.data?.error);
@@ -107,7 +147,19 @@ const PDFUploadForm = () => {
         borderBottom: isActive ? '2px solid #007bff' : 'none',
         whiteSpace: 'nowrap',
     });
-
+    const tabEmailStyle = (isActive) => ({
+        padding: '10px 20px',
+        border: 'none',
+        background: isActive ? '#f0f0f0' : 'transparent',
+        cursor: 'pointer',
+        borderBottom: isActive ? '2px solid #007bff' : 'none',
+        whiteSpace: 'nowrap',
+        
+        fontWeight: isActive ? 'bold' : 'normal',
+        color: isActive ? '#007bff' : 'inherit',
+        textDecoration: 'underline',
+        transition: 'all 0.2s ease',
+    });
     const contentStyle = {
         padding: '20px',
         backgroundColor: '#f9f9f9',
@@ -118,21 +170,7 @@ const PDFUploadForm = () => {
     const jobPosts = Object.values(responseList);
 
     return (
-        <div className="upload-page">
-            
-            <h2>AI-Powered Job Match Solution</h2>
-            <b>Project Overview: </b>
-            <p>This solution leverages Large Language Models and Semantic Search to streamline the job search process. It takes a user's resume in PDF format as input and extract skills, experiences, qualifications, career goals and preferences. The extracted data is then compared against a vast dataset of 51,863 job listings stored in OpenSearch, which have been collected from Google Jobs.  The system then identifies and returns the top 5 job descriptions that are the best match for the user's profile.</p>
-            <p>Available job titles in this tool are: Data Engineer, Data Scientist, Paid Media, Machine Learning Engineer, Data Analyst, Software Engineer, Paid Search, Business Intelligence Analyst, and Paid Social.</p>
-            <p>Available locations are: Toronto, Vancouver, Montreal, Calgary.</p>
-            
-            <p><a href="https://carbonated-waxflower-92e.notion.site/b978cea7fa9a4f2ab72558e9ff101ddf?pvs=4">Demo, Detailed Explanation, and Future Release</a></p>
-            <div> 
-                View My Code: <a href="https://github.com/wusixuan0/jd-match-api">Backend</a> <a href="https://github.com/wusixuan0/jd-match-frontend">Frontend</a>  
-            </div>
-            <p>Instruction: Upload resume PDF to get top 5 job posts, with option to select version.</p>
-            <div>Version 1 directly leverages Google Gemini to assess, match, and rank job descriptions.</div>
-            <p>Version 2 combines semantic search with embeddings and Gemini. More versions to come. See link for future release. </p>
+        <div>
             <form onSubmit={handleSubmit}>
                 <select value={version} 
                     onChange={(e) => setVersion(e.target.value)}
@@ -155,7 +193,7 @@ const PDFUploadForm = () => {
                     onChange={handleFileChange}
                 />
                 <button type="submit"
-                    className="upload-button"
+                    className="submit-button pdf-input"
                     disabled={isLoading || !pdfFile}
                 >
                     {isLoading ? 'Uploading...' : 'Upload'}
@@ -178,8 +216,14 @@ const PDFUploadForm = () => {
                             onClick={() => setActiveTab(index)}
                         >
                         {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'} Job {index + 1}
-                    </button>
+                        </button>
                     ))}
+                    { jobPosts.length > 0 && <button
+                        style={tabButtonStyle(activeTab === 'email')}
+                        onClick={() => setActiveTab('email')}
+                        >Email Subscription</button>
+                    }
+                    
                 </div>
 
                 <div style={contentStyle}>
@@ -212,6 +256,87 @@ const PDFUploadForm = () => {
                             </div>
                         )
                     ))}
+
+                    { activeTab === 'email' && (
+                        <div>
+                            <h3>Email Subscription</h3>
+                            <p>Love these job recommendations? We can send you the latest, most relevant opportunities straight to your inbox. 
+                            </p>
+                            <p>By providing your email, we'll also save a copy of your resume and send you personalized job matches at your preferred frequency. If you prefer not to subscribe or have us save your resume, you can still access recommendations. We won't store any of your data. Simply copy and paste the application links!</p>
+                            <p>You can unsubscribe anytime – the link will be at the top of each email. You can also remove your resume from our database using the link provided in each email. We promise to never spam you.</p>
+                            <p>Need to update your resume? No problem!  Unsubscribe and remove your old resume using the link in your email, then upload your new one and resubscribe!</p>
+
+                            <form onSubmit={handleEmailSubmit}>
+                                <div className="frequency-options">
+                                    <label>
+                                        <input
+                                        type="radio"
+                                        value="Daily"
+                                        checked={frequency === 'Daily'}
+                                        onChange={handleFrequencyChange}
+                                        />
+                                        Daily
+                                    </label>
+                                    <label>
+                                        <input
+                                        type="radio"
+                                        value="Weekly"
+                                        checked={frequency === 'Weekly'}
+                                        onChange={handleFrequencyChange}
+                                        />
+                                        Weekly
+                                    </label>
+                                    <label>
+                                        <input
+                                        type="radio"
+                                        value="Bi Weekly"
+                                        checked={frequency === 'Bi Weekly'}
+                                        onChange={handleFrequencyChange}
+                                        />
+                                        Bi Weekly
+                                    </label>
+                                </div>
+
+                                <div className="email-input">
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    placeholder="Enter your email address"
+                                />
+                                </div>
+
+                                <button type="submit" className="submit-button subcribe">       {isSubscribing ? 'Subscribing...' : 'Subscribe'}</button>
+                            </form>
+
+                            <h3>Feedback</h3>
+                            <p>Your feedback helps improve our algorithm. Tell us what you think!</p>
+                            
+                            <form onSubmit={handleFeedbackSubmit}>
+                                <>I plan to apply for one or more of these jobs.</>
+                                { jobPosts.map((job, index) => ( 
+                                    <div key={job?._id}>
+                                        <input 
+                                        type="checkbox" 
+                                        // checked={checked} 
+                                        // onChange={() => handleCheckboxChange(index)} 
+                                        />
+                                        <label> Job {index + 1}
+                                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'} Job {index + 1}
+                                        </label>
+                                    </div>
+                                ))}
+
+                                <p>(Optional) Please rank the recommendations from most liked to least liked (1 being the most liked).</p>
+
+                                
+                                <button type="submit" className="submit-button subcribe">       {isSubscribing ? 'Subscribing...' : 'Send Feeback'}</button>
+                            </form>
+                        </div>
+                    )}
+
+                </div>
+                <div>
 
                 </div>
             </div>}
