@@ -1,16 +1,36 @@
+.feedback {
+  width: 80px;
+  height: 35px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #d5d5d5;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  margin: 0.65rem;
+}
+
+.frequency-options label {
+  margin-right: 15px;
+}
+.email-input input {
+  width: 250px;
+}
 .logs {
   line-height : 1.5;
 }
 .upload-page {
+  line-height : 1.5;
   margin-left: 50px;
   margin-right: 50px;
 }
 .upload-container {
   display: flex;
 }
-  
-.upload-button {
+.pdf-input {
   height: 43px;
+}
+.submit-button {
   background-color: #5d3891;
   color: white;
   padding: 10px 20px;
@@ -20,20 +40,21 @@
   transition: background-color 0.3s ease;
 }
 
-.upload-button:hover {
+.submit-button:hover {
   background-color: #F4C2C2;
 }
 
-.upload-button:focus {
+.submit-button:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-form {
+.email-form, .pdf-form {
   display: flex;
   gap: 10px;
 }
 .version-select {
+  width: 155px;
   height: 43px;
   padding: 0 10px;
   font-size: 16px;
@@ -63,19 +84,6 @@ input {
 h3 {
     margin: 15px 0;
 }
-/* .app {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-} */
-/* .jd {
-    line-height: 150%;
-    padding-left: 10%;
-    padding-right: 10%;
-} */
 
 .warning {
     color: red;
