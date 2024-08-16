@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const UploadPDF = ({ onUploadSuccess }) => {
+const UploadPDF = ({ onUploadSuccess, onFormSubmit }) => {
     const [pdfFile, setPdfFile] = useState(null);
     const [version, setVersion] = useState('version2');
     const [modelName, setModelName] = useState('gemini-1.5-flash');
@@ -15,7 +15,8 @@ const UploadPDF = ({ onUploadSuccess }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (!pdfFile) return;
-
+        
+        onFormSubmit();
         setIsLoading(true);
         setError('');
 
@@ -46,15 +47,15 @@ const UploadPDF = ({ onUploadSuccess }) => {
             <select 
                 value={version} 
                 onChange={(e) => setVersion(e.target.value)}
-                className="version-select"
+                className="version-select v-select"
             >
                 <option value="version1">Version 1</option>
-                <option value="version2">Version 2</option>
+                <option value="version2">Version 2 (recommend)</option>
             </select>
             <select 
                 value={modelName} 
                 onChange={(e) => setModelName(e.target.value)}
-                className="version-select"
+                className="version-select model-select"
             >
                 <option value="gemini-1.5-flash">gemini-1.5-flash (recommend)</option>
                 <option value="gemini-1.5-pro">gemini-1.5-pro (my API key usage is limited)</option>

@@ -53,8 +53,14 @@
   display: flex;
   gap: 10px;
 }
-.version-select {
+.model-select {
   width: 155px;
+}
+.v-select {
+  width: 114px;
+}
+.version-select {
+
   height: 43px;
   padding: 0 10px;
   font-size: 16px;
