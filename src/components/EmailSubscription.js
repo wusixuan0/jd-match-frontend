@@ -47,7 +47,8 @@ const EmailSubscription = ({ transactionId, handleSubscribeStatus }) => {
         <div>
             <h3>Email Subscription</h3>
             <p>Love these job recommendations? We can send you the latest, most relevant opportunities straight to your inbox.</p>
-            <p>By providing your email, we'll also save a copy of your resume and send you personalized job matches at your preferred frequency. If you prefer not to subscribe or have us save your resume, you can still access recommendations. We won't store any of your data. Simply copy and paste the application links!</p>
+            <p>By providing your email, we'll also save a copy of your resume and send you personalized job matches at your preferred frequency. We use Mailchimp to manage our email communications, ensuring that your privacy is protected and your data is handled securely.</p>
+            <p>If you prefer not to subscribe or have us save your resume, you can still access recommendations. We won't store any of your data. Simply copy and paste the job application links!</p>
             <form onSubmit={handleEmailSubmit} className='email-form'>
                 <div className="frequency-options">
                     <label>
@@ -71,8 +72,8 @@ const EmailSubscription = ({ transactionId, handleSubscribeStatus }) => {
                     <label>
                         <input
                             type="radio"
-                            value="Bi Weekly"
-                            checked={frequency === 'Bi Weekly'}
+                            value="Bi-Weekly"
+                            checked={frequency === 'Bi-Weekly'}
                             onChange={handleFrequencyChange}
                         />
                         Bi Weekly
