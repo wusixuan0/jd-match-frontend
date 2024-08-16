@@ -1,35 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-const UploadPDF = ({ onUploadSuccess, onLogUpdate }) => {
+const UploadPDF = ({ onUploadSuccess }) => {
     const [pdfFile, setPdfFile] = useState(null);
     const [version, setVersion] = useState('version2');
     const [modelName, setModelName] = useState('gemini-1.5-flash');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-
-    useEffect(() => {
-        const WS_URL = process.env.REACT_APP_WS_URL || 'ws://localhost:8000/ws/logs/';
-        const socket = new WebSocket(WS_URL);
-
-        socket.onopen = () => {
-            console.log('WebSocket is connected.');
-        };
-
-        socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('Received log:', data.log);
-            onLogUpdate(data.log);
-        };
-
-        socket.onclose = () => {
-            console.log('WebSocket is closed.');
-        };
-
-        return () => {
-            socket.close();
-        };
-    }, [onLogUpdate]);
 
     const handleFileChange = (event) => {
         setPdfFile(event.target.files[0]);

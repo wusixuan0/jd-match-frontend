@@ -1,12 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Markdown from 'react-markdown';
 import EmailSubscription from './EmailSubscription.js';
 import Feedback from './Feedback.js';
 
-const Results = ({ responseList, logs, transactionId }) => {
+const Results = ({ responseList, logs, transactionId, onLogUpdate }) => {
     const [activeTab, setActiveTab] = useState('logs');
     const [subscribeStatus, setSubscribeStatus] = useState('');
-    
+ 
+    useEffect(() => {
+        const WS_URL = process.env.REACT_APP_WS_URL || 'ws://localhost:8000/ws/logs/';
+        const socket = new WebSocket(WS_URL);
+
+        socket.onopen = () => {
+            console.log('WebSocket is connected.');
+        };
+
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('Received log:', data.log);
+            onLogUpdate(data.log);
+        };
+
+        socket.onclose = () => {
+            console.log('WebSocket is closed.');
+        };
+
+        return () => {
+            socket.close();
+        };
+    }, [onLogUpdate]);
+   
     const handleSubscribeStatus = (email_id) => {
         setSubscribeStatus(email_id);
     };

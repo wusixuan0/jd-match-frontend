@@ -6,6 +6,7 @@ const Feedback = ({ transactionId, responseList, subscribeStatus }) => {
     const [rankings, setRankings] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
 
     const jobPosts = Object.values(responseList);
 
@@ -46,7 +47,7 @@ const Feedback = ({ transactionId, responseList, subscribeStatus }) => {
                 },
             });
 
-            console.log('Feedback submitted successfully', response.data);
+            setMessage('Feedback submitted successfully!', response.data);
         } catch (error) {
             setError(error?.response?.data?.error || 'An error occurred while submitting feedback');
         } finally {
@@ -110,6 +111,7 @@ const Feedback = ({ transactionId, responseList, subscribeStatus }) => {
             </form>
 
             {error && <div style={{color: 'red'}}>{error}</div>}
+            {message && <div className="success">{message}</div>}
         </div>
     );
 };
