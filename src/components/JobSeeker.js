@@ -1,26 +1,7 @@
-import React, { useState } from 'react';
-import UploadPDF from './UploadPDF.js';
-import Results from './Results.js';
+import React from 'react';
+import FormAndResult from './FormAndResult.js';
 
 const JobSeeker = () => {
-    const [responseList, setResponseList] = useState([]);
-    const [logs, setLogs] = useState([]);
-    const [transactionId, setTransactionId] = useState(null);
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-    const handleFormSubmit = () => {
-        setIsFormSubmitted(true);
-    };
-
-    const handleUploadSuccess = (data) => {
-        setResponseList(data.ranked_jds);
-        setTransactionId(data.transaction_id);
-    };
-
-    const handleLogUpdate = (newLog) => {
-        setLogs(prevLogs => [...prevLogs, newLog]);
-    };
-
     return (
         <div className="upload-page">
             <h2>AI-Personalized Job Search Platform</h2>
@@ -36,30 +17,7 @@ const JobSeeker = () => {
                 <li>Choose one of the newest Google Gemini models.</li>
                 
             </ul>
-
-            <UploadPDF 
-                onUploadSuccess={handleUploadSuccess}
-                onFormSubmit={handleFormSubmit}
-            />
-            
-            {(responseList.length > 0) && (
-                <><b>Stay Ahead of the Game: Get recommendations on your preferred frequency with our email job alert service via the Email Subscription Tab.</b>
-                <p>Coming Soon:</p>
-                <ul>
-                    <li>Personalized resume improvement advice.</li>
-                    <li>Option to generate a tailored resume for each recommended job.</li>
-                </ul>
-                </>
-                
-            )}
-            { isFormSubmitted && (
-                <Results 
-                    responseList={responseList}
-                    logs={logs}
-                    transactionId={transactionId}
-                    onLogUpdate={handleLogUpdate}
-                    />
-            )}
+            <FormAndResult></FormAndResult>
         </div>    
     );
 };

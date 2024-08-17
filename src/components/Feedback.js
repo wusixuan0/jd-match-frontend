@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Feedback = ({ transactionId, responseList, subscribeStatus }) => {
+const Feedback = ({ transactionId, responseList, mailID }) => {
     const [applied, setApplied] = useState([]);
     const [rankings, setRankings] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +39,7 @@ const Feedback = ({ transactionId, responseList, subscribeStatus }) => {
                 transaction_id: transactionId,
                 applied: applied,
                 rankings: rankings,
-                email_id: subscribeStatus,
+                email_id: mailID,
             };
             const response = await axios.post(FEEDBACK_URL, formData, {
                 headers: {

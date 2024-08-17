@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const EmailSubscription = ({ transactionId, handleSubscribeStatus }) => {
+const EmailSubscription = ({ transactionId, HandleSubscribeSetEmailID }) => {
     const [frequency, setFrequency] = useState('Daily');
     const [email, setEmail] = useState('');
     const [isSubscribing, setIsSubscribing] = useState(false);
@@ -34,7 +34,7 @@ const EmailSubscription = ({ transactionId, handleSubscribeStatus }) => {
                     'Content-Type': 'application/json',
                 },
             });
-            handleSubscribeStatus(response?.data?.email_id);
+            HandleSubscribeSetEmailID(response?.data?.email_id);
             setSubscriptionMessage('Successfully subscribed!');
         } catch (error) {
             setError(error?.response?.data?.error || 'An error occurred while subscribing');
