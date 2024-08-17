@@ -4,7 +4,7 @@ import Markdown from 'react-markdown'
 import EmailSubscription from './EmailSubscription.js';
 import Feedback from './Feedback.js';
 
-const FormAndResult = () => {
+const FormAndResult = ({ fileCategory }) => {
     const [pdfFile, setPdfFile] = useState(null);
     const [version, setVersion] = useState('version2');
     const [modelName, setModelName] = useState('gemini-1.5-flash');
@@ -17,20 +17,13 @@ const FormAndResult = () => {
     const [activeTab, setActiveTab] = useState('logs');
     const [transactionId, setTransactionId] = useState(null);
 
-    // email
-    const [frequency, setFrequency] = useState('Daily');
-    const [email, setEmail] = useState('');
-    const [isSubscribing, setIsSubscribing] = useState(false);
-    const [isSendingFeedback, setIsSendingFeedback] = useState(false);
+    const [resumeList, setResumeList] = useState('');
 
     const [mailID, setmailID] = useState('');
     const HandleSubscribeSetEmailID = (email_id) => {
         setmailID(email_id);
     };
   
-
-
-    
     const handleFileChange = (event) => {
         setPdfFile(event.target.files[0]);
     };
@@ -81,16 +74,23 @@ const FormAndResult = () => {
             formData.append('file', pdfFile);
             formData.append('version', version);
             formData.append('model_name', modelName);
+            formData.append('file_category', fileCategory);
             const response = await axios.post(API_BASE_URL, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
-            const ranked_jds=response?.data?.ranked_jds;
-            const transaction_id=response?.data?.transaction_id;
-            setResponseList(ranked_jds);
-            setTransactionId(transaction_id);
+            if (fileCategory == "resume") {
+                const ranked_jds=response?.data?.ranked_jds;
+                const transaction_id=response?.data?.transaction_id;
+                setResponseList(ranked_jds);
+                setTransactionId(transaction_id);
+            } else {
+                const ranked_resumes=response?.data?.match_result;
+                setResumeList(ranked_resumes);
+            }
+
             setIsLoading(false);
         } catch (error) {
             setError(error?.response?.data?.error);
@@ -200,6 +200,16 @@ const FormAndResult = () => {
                     onClick={() => setActiveTab('email')}
                     >Email Subscription</button>
                     }
+
+                    {Object.values(resumeList).map((resume, index) => (
+                        <button
+                            key={index}
+                            style={tabButtonStyle(activeTab === index)}
+                            onClick={() => setActiveTab(index)}
+                        >
+                        {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'} Candidate {index + 1}
+                        </button>
+                    ))}
                     
                 </div>
                 {/* End of Tab Button */}
@@ -208,7 +218,7 @@ const FormAndResult = () => {
                 <div style={contentStyle}>
 
 
-                    {/* Logs Tab Content */}
+                    {/* Start of Logs Tab Content */}
                     {activeTab === 'logs' && (
                     <>
                         {logs.length > 0 && <h3>Server Logs</h3>}
@@ -220,7 +230,8 @@ const FormAndResult = () => {
                         {error}
                     </>
                     )}
-
+                    {/* End of Logs Tab Content */}
+                    
                     { jobPosts.map((jd, index) => (
                         activeTab === index && (
                             <div key={jd?._id}>
@@ -238,7 +249,22 @@ const FormAndResult = () => {
                             </div>
                         )
                     ))}
+                    {/* Start of Candidate Tab Content */}
+                    { Object.values(resumeList).map((resume, index) => (
+                        activeTab === index && (
+                            <div key={index}>
+                                <h2>
+                                    {index === 0 ? '🥇 Number 1 Match:' :
+                                    index === 1 ? '🥈 Number 2 Match:' :
+                                    index === 2 ? '🥉 Number 3 Match:' : `🏅 Number ${index + 1} Match:`}
+                                </h2>
 
+                                <div dangerouslySetInnerHTML={{ __html: resume }} />
+
+                            </div>
+                        )
+                    ))}
+                    {/* End of Candidate Tab Content */}
                     {activeTab === 'email' && (
                         <div>
                           <EmailSubscription transactionId={transactionId} HandleSubscribeSetEmailID={HandleSubscribeSetEmailID} />

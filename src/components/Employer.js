@@ -26,7 +26,7 @@ const Employer = () => {
       <li>View our Employer <a href="https://carbonated-waxflower-92e.notion.site/Demo-9ea47725809840f1949759fee9792907?pvs=4">Demo</a> and learn more about our platform and features</li>
       <li>Currently focusing on tech roles in Toronto, Vancouver, Montreal, and Calgary. Expanding soon!</li>
       </ul>
-      <FormAndResult/>
+      <FormAndResult fileCategory={"jd"}/>
     </div>
   );
 };

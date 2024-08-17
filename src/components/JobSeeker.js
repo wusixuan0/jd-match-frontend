@@ -17,7 +17,7 @@ const JobSeeker = () => {
                 <li>Choose one of the newest Google Gemini models.</li>
                 
             </ul>
-            <FormAndResult></FormAndResult>
+            <FormAndResult fileCategory={"resume"}></FormAndResult>
         </div>    
     );
 };
