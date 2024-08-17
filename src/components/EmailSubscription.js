@@ -37,7 +37,17 @@ const EmailSubscription = ({ transactionId, HandleSubscribeSetEmailID }) => {
             HandleSubscribeSetEmailID(response?.data?.email_id);
             setSubscriptionMessage('Successfully subscribed!');
         } catch (error) {
-            setError(error?.response?.data?.error || 'An error occurred while subscribing');
+            let errorMessage;
+
+            if (Array.isArray(error?.response?.data?.error)) {
+                errorMessage = error.response.data.error.join(', ');
+            } else if (typeof error?.response?.data?.error === 'string') {
+                errorMessage = error.response.data.error;
+            } else {
+                errorMessage = 'An unknown error occurred';
+            }
+
+            setError(errorMessage);
         } finally {
             setIsSubscribing(false);
         }
