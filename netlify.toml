@@ -4,6 +4,6 @@
   publish = "build"
 [build.environment]
   REACT_APP_API_BASE_URL = "https://match-django-api-98fq.onrender.com/api/match/"
-  REACT_APP_WS_URL = "wss://match-django-api-98fq.com/ws/logs/"
+  REACT_APP_WS_URL = "wss://match-django-api-98fq.onrender.com/ws/logs/"
   REACT_APP_EMAIL_SUBSCRIBE_URL = "https://match-django-api-98fq.onrender.com/api/subscribe/"
   REACT_APP_FEEDBACK_URL = "https://match-django-api-98fq.onrender.com/api/feedback/"
