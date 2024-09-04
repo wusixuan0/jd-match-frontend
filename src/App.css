@@ -24,9 +24,6 @@
   margin-left: 50px;
   margin-right: 50px;
 }
-.upload-container {
-  display: flex;
-}
 .pdf-input {
   height: 43px;
 }
@@ -59,8 +56,7 @@
 .v-select {
   width: 114px;
 }
-.version-select {
-
+.select {
   height: 43px;
   padding: 0 10px;
   font-size: 16px;
@@ -70,11 +66,11 @@
   cursor: pointer;
 }
 
-.version-select:hover {
+.select:hover {
   border-color: #888;
 }
 
-.version-select:focus {
+.select:focus {
   outline: none;
   border-color: #0066cc;
   box-shadow: 0 0 0 2px rgba(0,102,204,0.2);

@@ -8,6 +8,8 @@ const FormAndResult = ({ fileCategory }) => {
     const [pdfFile, setPdfFile] = useState(null);
     const [version, setVersion] = useState('version2');
     const [modelName, setModelName] = useState('gemini-1.5-flash');
+    const [location, setLocation] = useState('');
+    const [jobTitle, setJobTitle] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -74,6 +76,8 @@ const FormAndResult = ({ fileCategory }) => {
             formData.append('file', pdfFile);
             formData.append('version', version);
             formData.append('model_name', modelName);
+            formData.append('location', location);
+            formData.append('job_title', jobTitle);
             formData.append('file_category', fileCategory);
             const response = await axios.post(API_BASE_URL, formData, {
                 headers: {
@@ -81,7 +85,7 @@ const FormAndResult = ({ fileCategory }) => {
                 },
             });
 
-            if (fileCategory == "resume") {
+            if (fileCategory === "resume") {
                 const ranked_jds=response?.data?.ranked_jds;
                 const transaction_id=response?.data?.transaction_id;
                 setResponseList(ranked_jds);
@@ -142,21 +146,6 @@ const FormAndResult = ({ fileCategory }) => {
         <div>
             {/* Start of PDF Upload Form */}
             <form onSubmit={handleSubmit} className='pdf-form'>
-                <select value={version} 
-                    onChange={(e) => setVersion(e.target.value)}
-                    className="version-select v-select"
-                >
-                    <option value="version1">Version 1</option>
-                    <option value="version2">Version 2</option>
-                </select>
-                <select value={modelName} 
-                    onChange={(e) => setModelName(e.target.value)}
-                    className="version-select model-select"
-                >
-                    <option value="gemini-1.5-flash">gemini-1.5-flash (recommend)</option>
-                    <option value="gemini-1.5-pro">gemini-1.5-pro (my API key usage is limited)</option>
-                    <option value="gemini-1.5-pro-exp-0801">gemini-1.5-pro-exp-0801</option>
-                </select>
                 <input
                     type="file"
                     accept="application/pdf"
@@ -168,6 +157,41 @@ const FormAndResult = ({ fileCategory }) => {
                 >
                     {isLoading ? 'Uploading...' : 'Upload'}
                 </button>
+                <select value={jobTitle} 
+                    onChange={(e) => setJobTitle(e.target.value)}
+                    className="select"
+                    style={{width: '175px'}}
+                >
+                    <option value="">Select job title</option>
+                    {['Software Engineer', 'Data Engineer', 'Data Scientist', 'Paid Media', 'Machine Learning Engineer', 'Data Analyst', 'Paid Social', 'Paid Search', 'Business Intelligence Analyst'].map((title, index) => (
+                        <option key={index} value={title}>{title}</option>
+                    ))}
+                </select>
+                <select value={location} 
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="select"
+                    style={{width: '145px'}}
+                >
+                    <option value="">Select location</option>
+                    {['Toronto', 'Vancouver', 'Montreal', 'Calgary'].map((title, index) => (
+                        <option key={index} value={title}>{title}</option>
+                    ))}
+                </select>
+                <select value={version} 
+                    onChange={(e) => setVersion(e.target.value)}
+                    className="select v-select"
+                >
+                    <option value="version1">Version 1</option>
+                    <option value="version2">Version 2</option>
+                </select>
+                <select value={modelName} 
+                    onChange={(e) => setModelName(e.target.value)}
+                    className="select model-select"
+                >
+                    <option value="gemini-1.5-flash">gemini-1.5-flash (recommend)</option>
+                    <option value="gemini-1.5-pro">gemini-1.5-pro (my API key usage is limited)</option>
+                    <option value="gemini-1.5-pro-exp-0801">gemini-1.5-pro-exp-0801</option>
+                </select>
             </form>
             {/* End of PDF Upload Form */}
 
